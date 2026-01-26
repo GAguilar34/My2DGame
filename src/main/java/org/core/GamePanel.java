@@ -1,6 +1,7 @@
 package org.core;
 
 import org.entity.Player;
+import org.tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,29 +14,27 @@ public class GamePanel extends JPanel implements Runnable{
 
     public final int tileSize = originalTileSize * scale; //48x48
 
-    final int maxScreenCol = 16; //Ancho
-    final int minScreenRow = 12; //Largo
-
-    final int screenWidth = tileSize * maxScreenCol; //768 pixeles
-    final int screenHeight = tileSize * minScreenRow; //576 pixeles
+    public final int maxScreenCol = 16; //Ancho
+    public final int maxScreenRow = 12; //Largo
+    public final int screenWidth = tileSize * maxScreenCol; //768 pixeles
+    public final int screenHeight = tileSize * maxScreenRow; //576 pixeles
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
 
     Player player = new Player(this, keyH);
 
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
+    TileManager tileM = new TileManager(this);
 
     int FPS = 60;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
+        this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+
     }
 
     public void startGameThread(){
@@ -82,6 +81,7 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
 
         Graphics2D g2d = (Graphics2D) g; //La clase Graphics2D extiende de la clase Graphics
+        tileM.draw(g2d);
         player.draw(g2d);
         g2d.dispose();
     }
